@@ -1,24 +1,33 @@
 import sqlite3
 
+
+    
 def get_proteina(grupo_alimentos, limite):
+    db_name = "Alimentozz.db"
+    var_conexion = sqlite3.connect(db_name)
+    var_cursor = var_conexion.cursor()
     print("Proteina\n")
-    sql = "SELECT Alimento, Proteina, Energia FROM Alimentos WHERE ID_Grupo=" + grupo_alimentos
+    sql = "SELECT Alimento, Proteina FROM Alimentos WHERE ID_Grupo=" + grupo_alimentos
     var_cursor.execute(sql)
     rows = var_cursor.fetchall()
     Output(rows, limite)
     print("\n")
 
 def get_lipidos (grupo_alimentos, limite):
+    db_name = "Alimentozz.db"
+    var_conexion = sqlite3.connect(db_name)
+    var_cursor = var_conexion.cursor()
     print("Lipidos\n")
-    sql = "SELECT Alimento, Lípidos, Energia FROM Alimentos WHERE ID_Grupo=" + grupo_alimentos
+    sql = "SELECT Alimento, Lípidos FROM Alimentos WHERE ID_Grupo=" + grupo_alimentos
     var_cursor.execute(sql)
     rows = var_cursor.fetchall()
     Output(rows, limite)
     print("\n")
 
 def get_carbohidratos(grupo_alimentos, limite):
+
     print("Carbohidratos\n")
-    sql = "SELECT Alimento, Hidratos_de_carbono, Energia FROM Alimentos WHERE ID_Grupo=" + grupo_alimentos
+    sql = "SELECT Alimento, Hidratos_de_carbono FROM Alimentos WHERE ID_Grupo=" + grupo_alimentos
     var_cursor.execute(sql)
     rows = var_cursor.fetchall()
     Output(rows, limite)
@@ -42,6 +51,5 @@ def filtro(row, limite):
     if row[1] > limite:
         print(row)
 
-db_name = "Alimentozz.db"
-var_conexion = sqlite3.connect(db_name)
-var_cursor = var_conexion.cursor()
+
+
