@@ -1,6 +1,5 @@
 import manager
-
-
+from Filtro_alimentos import *
 
 class Table(manager.Base):
 #Esta clase hereda de la clase base
@@ -88,10 +87,10 @@ if __name__ == '__main__':
     Aqui usamos la clase Base para obtener las raciones a cubrir durante el dia
     """
     print("========== MENU A CUBRIR ==========")
-    distribucion = manager.Base(energia=1500, carbos=45, lipidos=30, prote=25)
+    distribucion = manager.Base(energia=1800, carbos=45, lipidos=30, prote=25)
     resultado_distribucion, prote, lipi, carbo, ene = distribucion.calcular(leguminosas=1, leche_descremada=2)
-    for key, value in resultado_distribucion.items():
-            print(f'{key}: {value}')
+    """for key, value in resultado_distribucion.items():
+            print(f'{key}: {value}')"""
     print(f"""
           TOTAL
             proteinas:      {prote}
@@ -99,15 +98,13 @@ if __name__ == '__main__':
             carbohidratos:  {carbo}
             energia:        {ene}
 """)
-    
+
     print("========= DESAYUNO ============")
     """
     En base a los resultados anteriores mandamos las raciones a cubrir creando un objeto desayuno que es una instacia de la clase Table, donde el utimo argumento de multiplicador es 0.3 debido a que asi lo marca la tabla donde nos basamos.
     """
     desayuno = Table(carbo, lipi, prote, ene, 0.3)
     resultado_des, prote_des, lipi_des, carbo_des, ene_des = desayuno.calcular(cereales=1, verduras=2, moderado_aporte=2, aceites_sin_proteinas=3)
-    for key, value in resultado_des.items():
-            print(f'{key}: {value}')
     print(f"""
           COMIDA    
             proteinas:      {prote_des}
@@ -115,11 +112,24 @@ if __name__ == '__main__':
             carbohidratos:  {carbo_des}
             energia:        {ene_des}
 """)
+    
+    
+    print("========= COLACION MATUTINA ============")
+    """
+    En base a los resultados anteriores mandamos las raciones a cubrir creando un objeto desayuno que es una instacia de la clase Table, donde el utimo argumento de multiplicador es 0.3 debido a que asi lo marca la tabla donde nos basamos.
+    """
+    colacion1 = Table(carbo, lipi, prote, ene, 0.3)
+    resultado_col1, prote_col1, lipi_col1, carbo_col1, ene_col1 = colacion1.calcular(aceites_con_proteinas=4)
+    print(f"""
+          COLACION MATUTINA    
+            proteinas:      {prote_col1}
+            lipidos:        {lipi_col1}
+            carbohidratos:  {carbo_col1}
+            energia:        {ene_col1}
+""")
     print("========= COMIDA ============")
     comida = Table(carbo, lipi, prote, ene, 0.35)
     resultado_comida, prote_comida, lipi_comida, carbo_comida, ene_comida = comida.calcular(verduras=2, moderado_aporte=4, aceites_sin_proteinas=4)
-    for key, value in resultado_comida.items():
-            print(f'{key}: {value}')
     print(f"""
           COMIDA    
             proteinas:      {prote_comida}
@@ -127,4 +137,28 @@ if __name__ == '__main__':
             carbohidratos:  {carbo_comida}
             energia:        {ene_comida}
 """)
+    
+    print("========= COLACION VESPERTINA ============")
+    """
+    En base a los resultados anteriores mandamos las raciones a cubrir creando un objeto desayuno que es una instacia de la clase Table, donde el utimo argumento de multiplicador es 0.3 debido a que asi lo marca la tabla donde nos basamos.
+    """
+    colacion2 = Table(carbo, lipi, prote, ene, 0.15)
+    resultado_col2, prote_col2, lipi_col2, carbo_col2, ene_col2 = colacion2.calcular(aceites_con_proteinas=4)
+    print(f"""
+          COLACION MATUTINA    
+            proteinas:      {prote_col2}
+            lipidos:        {lipi_col2}
+            carbohidratos:  {carbo_col2}
+            energia:        {ene_col2}
+""")
 
+    print("========= CENA ============")
+    cena = Table(carbo, lipi, prote, ene, 0.20)
+    resultado_cena, prote_cena, lipi_cena, carbo_cena, ene_cena = cena.calcular(verduras=2, moderado_aporte=3, aceites_sin_proteinas=3)
+    print(f"""
+          COMIDA    
+            proteinas:      {prote_cena}
+            lipidos:        {lipi_cena}
+            carbohidratos:  {carbo_cena}
+            energia:        {ene_cena}
+""")
