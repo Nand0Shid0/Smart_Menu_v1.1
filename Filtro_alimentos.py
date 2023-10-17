@@ -43,6 +43,6 @@ def Output(rows, limite):
 
 def filtro(row, limite):
     #Elementos mayores a 5gr de cada tipo Proteina, Lipidos y Carbos por ejemplo seran tomados en cuenta
-    if float(row[1]) < limite:
+    if float(row[1])  limite:
         print(row)
 
