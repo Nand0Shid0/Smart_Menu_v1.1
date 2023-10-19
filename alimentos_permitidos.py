@@ -72,13 +72,29 @@ enfermedades_alimentos_permitidos = {
     "Otra": []
 }
 
-# Ejemplo de cómo obtener alimentos permitidos para una enfermedad específica
-enfermedad = "Otra"
-alimentos_permitidos = enfermedades_alimentos_permitidos.get(enfermedad, [])
-if alimentos_permitidos:
-    print(f"Alimentos permitidos para la enfermedad {enfermedad}:")
-    for alimento in alimentos_permitidos:
+
+# Obtener una entrada de texto del usuario que contiene las enfermedades seleccionadas
+enfermedades_seleccionadas = input("Ingrese las enfermedades seleccionadas (separadas por comas): ")
+
+# Dividir la entrada en una lista de enfermedades
+enfermedades_seleccionadas = [enfermedad.strip() for enfermedad in enfermedades_seleccionadas.split(',')]
+
+# Crear una lista para almacenar los alimentos permitidos de todas las enfermedades seleccionadas
+alimentos_totales = []
+
+# Iterar a través de las enfermedades seleccionadas y agregar sus alimentos permitidos a la lista alimentos_totales
+for enfermedad in enfermedades_seleccionadas:
+    alimentos_enfermedad = enfermedades_alimentos_permitidos.get(enfermedad)
+    if alimentos_enfermedad:
+        alimentos_totales.extend(alimentos_enfermedad)
+
+# Eliminar alimentos duplicados convirtiendo la lista en un conjunto y luego nuevamente en una lista
+alimentos_totales = list(set(alimentos_totales))
+
+# Imprimir la lista de alimentos permitidos para las enfermedades seleccionadas sin duplicados
+if alimentos_totales:
+    print(f"Alimentos permitidos para las enfermedades seleccionadas:")
+    for alimento in alimentos_totales:
         print(alimento)
 else:
-    print(f"No se encontraron alimentos permitidos para la enfermedad {enfermedad}.")
-
+    print("No se encontraron alimentos permitidos para las enfermedades seleccionadas.")
