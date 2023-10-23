@@ -1,3 +1,5 @@
+import sqlite3
+
 alimentos_metabolicos = [
     "Avena", "Arroz", "Bolillo", "Tortilla", "Pan de caja", "Todas las frutas", "Todas las verduras",
     "Frijol", "Lenteja", "Haba", "Garbanzo", "Soya", "Alubia", "Alverjon", "Pollo", "Res", "Ternera",
@@ -72,89 +74,57 @@ enfermedades_alimentos_permitidos = {
     "Otra": []
 }
 
-def mostrar_enfermedades_alimentos_permitidos(alimentos):
-    
-    frutas = {"Frutas": [
-        "Todas las frutas",
-        "Manzana",
-        "Pera",
-        "Durazno",
-        "Sandía",
-        "Melón",
-        "Guayaba",
-        "Jícama",
-        "Ciruela roja"
-    ]}
+def menu(search_name,deficiencia):
+    database = "Alimentozz.db"
+    conn = sqlite3.connect(database)
+    cursor = conn.cursor()
+    alimentos = []
+    def caso2(id_gupo):
+        try:
+            cursor.execute(
+                f"SELECT MIN({value}) FROM Alimentos WHERE ID_Grupo = ?", (id_gupo))
+            min_value = cursor.fetchone()[0]
 
-    verduras = {
-        "Verduras": [
-            "Todas las verduras",
-            "Zanahoria",
-            "Chayote cocidos"
-        ]}
+            cursor.execute(
+                f"SELECT * FROM Alimentos WHERE {value} = ? AND ID_Grupo = ? ", (min_value,id_gupo))
+            result = cursor.fetchone()
 
-    alimentos_animal = {
-        "Alimentos de origen animal": [
-            "Pollo",
-            "Res",
-            "Ternera",
-            "Pescado",
-            "Cerdo",
-            "Clara de Huevo",
-            "Jamón de Pavo",
-            "Pechuga de Pavo",
-            "Queso Panela",
-            "Requeson",
-            "Leche descremada"
-        ]}
+            if result:
+                alimentos.append(result[2])
+        except sqlite3.OperationalError:
+            pass
 
-    cereales = {
-        "Granos y cereales": [
-            "Avena",
-            "Arroz",
-            "Bolillo",
-            "Tortilla",
-            "Pan de caja",
-            "Tapioca",
-            "Papa",
-            "Camote",
-            "Pan dulce",
-            "Tostada",
-            "Maíz"
-        ]}
+    for value in deficiencia:
+        for alimento in search_name:
+            if alimento == "Todas las frutas":
+                caso2("2")
+            if alimento == "Todas las verduras":
+                caso2("1")
+            else:      
+                try:
+                    cursor.execute(
+                        f"SELECT MIN({value}) FROM Alimentos WHERE Alimento LIKE ?", (alimento + '%',))
+                    min_value = cursor.fetchone()[0]
 
-    lacteos = {
-        "Lacteos": [
-            "Leche entera",
-            "Semidescremada",
-            "Queso Cottage",
-            "Yogur"
-        ]}
+                    cursor.execute(
+                        f"SELECT * FROM Alimentos WHERE {value} = ? AND Alimento LIKE ?", (min_value, alimento + '%'))
+                    result = cursor.fetchall()
 
-    grupos_alimentos = [frutas, verduras, alimentos_animal, cereales, lacteos]
+                    if result:
+                        for row in result:
+                            alimentos.append(row[2])
+                except sqlite3.OperationalError:
+                    pass
 
-    salida = {
-        "Frutas": [],
-        "Verduras": [],
-        "Alimentos de origen animal": [],
-        "Granos y cereales": [],
-        "Lacteos": []
-
-    }
-
-    for grupo in grupos_alimentos:
-        for key, value in grupo.items():
-            for alimento in alimentos:
-                if alimento in value:
-                    salida[key].append(alimento)
-                    continue
-                else:
-                    continue
-
-    return salida
+    return list(set(alimentos))
 
 
+#Entrada de datos al programa
 enfermedades_seleccionadas = input("Ingrese las enfermedades seleccionadas (separadas por comas): ")
+deficiencias = input("Ingrese las deficiencias seleccionadas (separadas por comas): ")
+deficiencias_lista = deficiencias.split(',')
+
+#################################################################################################
 enfermedades_seleccionadas = [enfermedad.strip() for enfermedad in enfermedades_seleccionadas.split(',')]
 alimentos_totales = []
 for enfermedad in enfermedades_seleccionadas:
@@ -167,10 +137,11 @@ if alimentos_totales:
     print(f"Alimentos permitidos para las enfermedades seleccionadas:")
     for alimento in alimentos_totales:
         lista_alimentos.append(alimento)
-    menu = mostrar_enfermedades_alimentos_permitidos(lista_alimentos)
-    for key, value in menu.items():
-        print("\n"+key)
-        for item in value:
-            print(f"\t- {item}")
+    return_menu = menu(lista_alimentos,deficiencias_lista)
+    #print(return_menu)
+    print("Lista de los alimentos recomendados segun las decifiencias del paciente:")
+    for alimento_menu in return_menu:
+        print("\t-- "+alimento_menu)
+    
 else:
     print("No se encontraron alimentos permitidos para las enfermedades seleccionadas.")
