@@ -72,29 +72,105 @@ enfermedades_alimentos_permitidos = {
     "Otra": []
 }
 
+def mostrar_enfermedades_alimentos_permitidos(alimentos):
+    
+    frutas = {"Frutas": [
+        "Todas las frutas",
+        "Manzana",
+        "Pera",
+        "Durazno",
+        "Sandía",
+        "Melón",
+        "Guayaba",
+        "Jícama",
+        "Ciruela roja"
+    ]}
 
-# Obtener una entrada de texto del usuario que contiene las enfermedades seleccionadas
+    verduras = {
+        "Verduras": [
+            "Todas las verduras",
+            "Zanahoria",
+            "Chayote cocidos"
+        ]}
+
+    alimentos_animal = {
+        "Alimentos de origen animal": [
+            "Pollo",
+            "Res",
+            "Ternera",
+            "Pescado",
+            "Cerdo",
+            "Clara de Huevo",
+            "Jamón de Pavo",
+            "Pechuga de Pavo",
+            "Queso Panela",
+            "Requeson",
+            "Leche descremada"
+        ]}
+
+    cereales = {
+        "Granos y cereales": [
+            "Avena",
+            "Arroz",
+            "Bolillo",
+            "Tortilla",
+            "Pan de caja",
+            "Tapioca",
+            "Papa",
+            "Camote",
+            "Pan dulce",
+            "Tostada",
+            "Maíz"
+        ]}
+
+    lacteos = {
+        "Lacteos": [
+            "Leche entera",
+            "Semidescremada",
+            "Queso Cottage",
+            "Yogur"
+        ]}
+
+    grupos_alimentos = [frutas, verduras, alimentos_animal, cereales, lacteos]
+
+    salida = {
+        "Frutas": [],
+        "Verduras": [],
+        "Alimentos de origen animal": [],
+        "Granos y cereales": [],
+        "Lacteos": []
+
+    }
+
+    for grupo in grupos_alimentos:
+        for key, value in grupo.items():
+            for alimento in alimentos:
+                if alimento in value:
+                    salida[key].append(alimento)
+                    continue
+                else:
+                    continue
+
+    return salida
+
+
 enfermedades_seleccionadas = input("Ingrese las enfermedades seleccionadas (separadas por comas): ")
-
-# Dividir la entrada en una lista de enfermedades
 enfermedades_seleccionadas = [enfermedad.strip() for enfermedad in enfermedades_seleccionadas.split(',')]
-
-# Crear una lista para almacenar los alimentos permitidos de todas las enfermedades seleccionadas
 alimentos_totales = []
-
-# Iterar a través de las enfermedades seleccionadas y agregar sus alimentos permitidos a la lista alimentos_totales
 for enfermedad in enfermedades_seleccionadas:
     alimentos_enfermedad = enfermedades_alimentos_permitidos.get(enfermedad)
     if alimentos_enfermedad:
         alimentos_totales.extend(alimentos_enfermedad)
-
-# Eliminar alimentos duplicados convirtiendo la lista en un conjunto y luego nuevamente en una lista
 alimentos_totales = list(set(alimentos_totales))
-
-# Imprimir la lista de alimentos permitidos para las enfermedades seleccionadas sin duplicados
+lista_alimentos = []
 if alimentos_totales:
     print(f"Alimentos permitidos para las enfermedades seleccionadas:")
     for alimento in alimentos_totales:
-        print(alimento)
+        lista_alimentos.append(alimento)
+    menu = mostrar_enfermedades_alimentos_permitidos(lista_alimentos)
+    for key, value in menu.items():
+        print("\n"+key)
+        for item in value:
+            print(f"\t- {item}")
 else:
     print("No se encontraron alimentos permitidos para las enfermedades seleccionadas.")
