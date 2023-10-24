@@ -153,7 +153,7 @@ for insertar in var_Nombres_csv:
         #Contador
         count = 0
         # abrir archivo
-        with open(os.path.join(alimentos_directory, f"{insertar}.csv"), "r") as my_file:
+        with open(os.path.join(alimentos_directory, f"{insertar}.csv"), "r", encoding="utf-8") as my_file:
             #obtenemos el id del grupo de alimentos
             var_cursor.execute(f"SELECT ID FROM Grupo_alimentos WHERE Nombre_grupo='{insertar}'")
             var_id_grupo = fun_obtener_id_grupo(var_cursor)
